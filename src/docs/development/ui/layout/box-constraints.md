@@ -1,56 +1,47 @@
 ---
-title: Dealing with box constraints
+title: Box Constraint 다루기
 short-title: Box constraints
 ---
 
 {{site.alert.note}}
-  You may be directed to this page if the framework detects a problem involving
-  box constraints.
+  프레임워크에서 box constraint 관련 문제를 발견하면 이 페이지를 참고해주세요.
 {{site.alert.end}}
 
-In Flutter, widgets are rendered by their underlying
-[`RenderBox`]({{site.api}}/flutter/rendering/RenderBox-class.html)
-objects. Render boxes are given
-constraints by their parent, and size themselves within those
-constraints. Constraints consist of minimum and maximum widths and
-heights; sizes consist of a specific width and height.
+Flutter에서, 위젯은 기본 [`RenderBox`]({{site.api}}/flutter/rendering/RenderBox-class.html) 객체에 의해 렌더링 됩니다.
+렌더링 박스는 부모에 의해 제약 사항이 주어지며, 해당 조건 내에서 크기가 조정됩니다.
+제약 사항은 최소 너비와 최대 너비 그리고 높이로 구성되며, 크기는 특정 넓이와 높이로 구성됩니다.
 
-Generally, there are three kinds of boxes, in terms of how they handle
-their constraints:
+일반적으로 제약 사항을 조정하는 방법에는 세 종류의 박스가 있는데:
 
-- Those that try to be as big as possible.
-  For example, the boxes used by [`Center`]({{site.api}}/flutter/widgets/Center-class.html) and [`ListView`]({{site.api}}/flutter/widgets/ListView-class.html).
-- Those that try to be the same size as their children.
-  For example, the boxes used by [`Transform`]({{site.api}}/flutter/widgets/Transform-class.html) and [`Opacity`]({{site.api}}/flutter/widgets/Opacity-class.html).
-- Those that try to be a particular size.
-  For example, the boxes used by [`Image`]({{site.api}}/flutter/dart-ui/Image-class.html) and [`Text`]({{site.api}}/flutter/widgets/Text-class.html).
+- 가능한 크게 하려는 경우.
+  예를 들어, [`Center`]({{site.api}}/flutter/widgets/Center-class.html) 및
+  [`ListView`]({{site.api}}/flutter/widgets/ListView-class.html)에 사용하는 박스들이 있습니다.
+- 하위 요소들과 같은 크기로 만들려는 경우.
+  예를 들어, [`Transform`]({{site.api}}/flutter/widgets/Transform-class.html) 및
+  [`Opacity`]({{site.api}}/flutter/widgets/Opacity-class.html)에 사용하는 박스들이 있습니다.
+- 개별적인 크기를 갖게 하려는 경우.
+  예를 들어, [`Image`]({{site.api}}/flutter/dart-ui/Image-class.html) 및
+  [`Text`]({{site.api}}/flutter/widgets/Text-class.html) 에 사용하는 박스들이 있습니다.
 
-Some widgets, for example [`Container`]({{site.api}}/flutter/widgets/Container-class.html), vary from type to type based on
-their constructor arguments. In the case of [`Container`]({{site.api}}/flutter/widgets/Container-class.html), it defaults
-to trying to be as big as possible, but if you give it a `width`, for
-instance, it tries to honor that and be that particular size.
+[`Container`]({{site.api}}/flutter/widgets/Container-class.html)와 같은 일부 위젯들은 생성자의 인자에 따라 종류별로 달라집니다.
+[`Container`]({{site.api}}/flutter/widgets/Container-class.html)의 경우,
+가능한 크게 하는 것이 기본 값이지만, `넓이`를 줄 경우 해당 값을 우선적으로 가지게 됩니다.
 
-Others, for example [`Row`]({{site.api}}/flutter/widgets/Row-class.html) and [`Column`]({{site.api}}/flutter/widgets/Column-class.html) (flex boxes) vary based on the
-constraints they are given, as described below in the "Flex" section.
+다른 경우를 예로 들면 [`Row`]({{site.api}}/flutter/widgets/Row-class.html)와
+[`Column`]({{site.api}}/flutter/widgets/Column-class.html)은
+아래 "Flex" 섹션에서 설명한대로, 주어진 제약 사항에 따라 달라집니다.
 
-The constraints are sometimes "tight", meaning that they leave no room
-for the render box to decide on a size (e.g. if the minimum and
-maximum width are the same, it is said to have a tight width). The
-main example of this is the `App` widget, which is contained by the
-[`RenderView`]({{site.api}}/flutter/rendering/RenderView-class.html)
-class: the box used by the child returned by the
-application's [`build`]({{site.api}}/flutter/widgets/State/build.html)
-function is given a constraint that forces it to
-exactly fill the application's content area (typically, the entire
-screen). Many of the boxes in Flutter, especially those that just take a
-single child, pass their constraint on to their children. This
-means that if you nest a bunch of boxes inside each other at the root
-of your application's render tree, they'll all exactly fit in each
-other, forced by these tight constraints.
+때때로 "엄격한" 제약 사항은 렌더링 박스가 크기를 결정할 수 있는 여지를 남기지 않는데요.
+(e.g. 최소 너비와 최대 너비가 같을 때, 엄격한 넓이를 가진다고 말합니다)
+그 대표적인 예가 [`RenderView`]({{site.api}}/flutter/rendering/RenderView-class.html) 클래스가 포함된 `App` 위젯인데:
+어플리케이션의 [`build`]({{site.api}}/flutter/widgets/State/build.html) 함수에 의해
+반한되는 자식에 사용하는 박스에는 컨텐츠 영역(일반적으로 전체 화면)을 전부 채우도록 하는 제약 사항이 주어집니다.
 
-Some boxes _loosen_ the constraints, meaning the maximum is maintained
-but the minimum is removed. For example,
-[`Center`]({{site.api}}/flutter/widgets/Center-class.html).
+Flutter에 있는 많은 상자들 중 하나의 자식만을 가지는 박스는 자식에게 제약 사항을 전달하는데요.
+말인즉슨 어플리케이션 렌더 트리의 루트에 여러 박스들을 배치하면, 이런 엄격한 제약 사항들에 의해 서로 정확히 들어맞을 겁니다.
+
+일부 박스들은 제약 사항을 _느슨하게_ 하는데, 이는 최대치는 유지되지만 최소치는 제거된다는 걸 뜻합니다.
+예로는 [`Center`]({{site.api}}/flutter/widgets/Center-class.html)가 있습니다.
 
 Unbounded constraints
 ---------------------
