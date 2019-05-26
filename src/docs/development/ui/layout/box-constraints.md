@@ -13,7 +13,7 @@ Flutter에서, 위젯은 기본 [`RenderBox`]({{site.api}}/flutter/rendering/Ren
 
 일반적으로 제약 사항을 조정하는 방법에는 세 종류의 박스가 있는데:
 
-- 가능한 크게 하려는 경우.
+- 최대한 크게 하려는 경우.
   예를 들어, [`Center`]({{site.api}}/flutter/widgets/Center-class.html) 및
   [`ListView`]({{site.api}}/flutter/widgets/ListView-class.html)에 사용하는 박스들이 있습니다.
 - 하위 요소들과 같은 크기로 만들려는 경우.
@@ -25,7 +25,7 @@ Flutter에서, 위젯은 기본 [`RenderBox`]({{site.api}}/flutter/rendering/Ren
 
 [`Container`]({{site.api}}/flutter/widgets/Container-class.html)와 같은 일부 위젯들은 생성자의 인자에 따라 종류별로 달라집니다.
 [`Container`]({{site.api}}/flutter/widgets/Container-class.html)의 경우,
-가능한 크게 하는 것이 기본 값이지만, `넓이`를 줄 경우 해당 값을 우선적으로 가지게 됩니다.
+최대한 크게 하는 것이 기본 값이지만, `넓이`를 줄 경우 해당 값을 우선적으로 가지게 됩니다.
 
 다른 경우를 예로 들면 [`Row`]({{site.api}}/flutter/widgets/Row-class.html)와
 [`Column`]({{site.api}}/flutter/widgets/Column-class.html)은
@@ -46,30 +46,23 @@ Flutter에 있는 많은 상자들 중 하나의 자식만을 가지는 박스�
 Unbounded constraints
 ---------------------
 
-In certain situations, the constraint that is given to a box is
-_unbounded_, or infinite. This means that either the maximum width or
-the maximum height is set to `double.INFINITY`.
+특정한 상황에서, 박스에 주어지는 제약 사항은 _제한되지 않거나_ 무한한데요.
+이 말은 최대 너비 혹은 최대 높이가 `double.INFINITY`로 설정된다는 걸 뜻합니다.
 
-A box that tries to be as big as possible won't function usefully when
-given an unbounded constraint and, in debug mode, such a combination
-throws an exception that points to this file.
+가능한 만큼 커지는 박스는 제한되지 않은 제약 사항이 주어질 때 적합하지 않고,
+디버그 모드에서 이렇게 조합하면 해당 파일을 가르키는 예외를 던집니다.
 
-The most common cases where a render box finds itself with unbounded
-constraints are within flex boxes
-([`Row`]({{site.api}}/flutter/widgets/Row-class.html)
-and [`Column`]({{site.api}}/flutter/widgets/Column-class.html)),
-and **within scrollable regions**
-([`ListView`]({{site.api}}/flutter/widgets/ListView-class.html)
-and other [`ScrollView`]({{site.api}}/flutter/widgets/ScrollView-class.html) subclasses).
+제한되지 않은 제약 사항을 가지는 렌더링 박스를 보게 되는 일반적인 경우는
+플렉스 박스([`Row`]({{site.api}}/flutter/widgets/Row-class.html)
+및 [`Column`]({{site.api}}/flutter/widgets/Column-class.html))와
+**스크롤 가능 영역**([`ListView`]({{site.api}}/flutter/widgets/ListView-class.html)
+및 다른 [`ScrollView`]({{site.api}}/flutter/widgets/ScrollView-class.html) 하위 클래스) 내부인데요.
 
-In particular, [`ListView`]({{site.api}}/flutter/widgets/ListView-class.html)
-tries to expand to fit the space available
-in its cross-direction (for example, if it's a vertically-scrolling block,
-it tries to be as wide as its parent). If you nest a vertically
-scrolling [`ListView`]({{site.api}}/flutter/widgets/ListView-class.html)
-inside a horizontally scrolling [`ListView`]({{site.api}}/flutter/widgets/ListView-class.html),
-the inner one tries to be as wide as possible, which is infinitely
-wide, since the outer one is scrollable in that direction.
+특히, [`ListView`]({{site.api}}/flutter/widgets/ListView-class.html)는 사용할 수 있는
+공간에 맞게 가로 방향으로 확장됩니다. (예를 들어, 세로 스크롤 블록의 경우 부모와 같은 크기로 넓어집니다.)
+만약 가로 스크롤 [`ListView`]({{site.api}}/flutter/widgets/ListView-class.html) 안에
+세로 스크롤 [`ListView`]({{site.api}}/flutter/widgets/ListView-class.html)를 배치하면
+내부에 있는 뷰는 가능한 만큼 넓어지는데, 이는 외부 뷰에서 해당 방향으로 스크롤할 수 있기 때문입니다.
 
 Flex
 ----
