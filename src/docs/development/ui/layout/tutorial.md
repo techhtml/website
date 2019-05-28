@@ -1,7 +1,7 @@
 ---
-title: Layout tutorial
-short-title: Tutorial
-description: Learn how to build a layout.
+title: 레이아웃 튜토리얼
+short-title: 튜토리얼
+description: 레이아웃을 만드는 방법을 배웁니다.
 diff2html: true
 ---
 
