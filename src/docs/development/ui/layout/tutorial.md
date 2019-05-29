@@ -20,27 +20,26 @@ diff2html: true
   * Flutter 레이아웃을 만드는 방법.
 {{site.alert.end}}
 
-This is a guide to building layouts in Flutter.
-You'll build the layout for the following app:
+이 문서는 Flutter에서 레이아웃을 작성하는 방법을 소개합니다.
+You'll build the layout for the following app.
 
 {% include app-figure.md img-class="site-mobile-screenshot border"
     image="ui/layout/lakes.jpg" caption="The finished app" %}
 
-This guide then takes a step back to explain Flutter's approach to layout,
-and shows how to place a single widget on the screen.
-After a discussion of how to lay widgets out horizontally and vertically,
-some of the most common layout widgets are covered.
+Flutter의 레이아웃을 다루기 전에,
+화면 위에 하나의 위젯을 배치하는 방법을 살펴보도록 하겠습니다.
+위젯을 수평, 수직으로 배치하는 방법을 논의한 다음에는 가장 일반적인 레이아웃 위젯도 다뤄보겠습니다.
 
-If you want a "big picture" understanding of the layout mechanism,
-start with [Flutter's approach to layout](/docs/development/ui/layout).
+레이아웃 메커니즘을 이해하기 위한 "큰 그림"을 알고싶으신 경우라면,
+[Flutter's approach to layout](/docs/development/ui/layout)을 찾아보세요.
 
-## Step 0: Create the app base code
+## Step 0: 앱 기본 코드 만들기
 
-Make sure you've [set up](/docs/get-started/install) your environment,
-then do the following:
+[set up](/docs/get-started/install) 과정을 통해 개발 환경을 잘 구성하셨다면,
+다음의 순서를 따라보세요.
 
  1. [Create a basic "Hello World" Flutter app][hello-world].
- 2. Change the app bar title and the app title as follows:
+ 2. 아래의 코드를 적용해서 app bar title과 app title을 바꿔보세요.
 
     <?code-excerpt "{codelabs/startup_namer/step1_base,layout/base}/lib/main.dart"?>
     ```diff
@@ -63,46 +62,44 @@ then do the following:
 
 [hello-world]: /docs/get-started/codelab#step-1-create-the-starter-flutter-app
 
-## Step 1: Diagram the layout
+## Step 1: 레이아웃 그리기
 
-The first step is to break the layout down to its basic elements:
+첫 단계로 레이아웃을 기본 요소들로 나눠보겠습니다.
 
-* Identify the rows and columns.
-* Does the layout include a grid?
-* Are there overlapping elements?
-* Does the UI need tabs?
-* Notice areas that require alignment, padding, or borders.
+* Row와 Column 레이아웃을 확인합니다.
+* 레이아웃이 그리드를 포함하나요?
+* 겹쳐친 요소가 있나요?
+* UI에 탭이 필요한가요?
+* 정렬, 패딩, 보더가 필요한 영역에 주의합니다.
 
-First, identify the larger elements. In this example, four elements are
-arranged into a column: an image, two rows, and a block of text.
+먼저, 더 큰 요소들을 구분합니다. 이 예제에서는 4개의 요소를 가지고 있는데, 
+이미지 하나, 두 개의 row 레이아웃, 텍스트 영역 하나입니다.
 
 {% include app-figure.md img-class="site-mobile-screenshot border"
     image="ui/layout/lakes-column-elts.png" caption="Column elements (circled in red)" %}
 
-Next, diagram each row. The first row, called the Title
-section, has 3 children: a column of text, a star icon,
-and a number. Its first child, the column, contains 2 lines of text.
-That first column takes a lot of space, so it must be wrapped in an
-Expanded widget.
+다음에는 각 row를 그려봅니다. 첫 번째 row 타이틀 영역으로 
+텍스트 column 하나, 별 아이콘 하나, 그리고 숫자를 가지고 있습니다.
+첫 번째 자식 요소는 두 줄짜리 텍스트 column입니다.
+이 column은 넓은 영역을 차지하고 있기 때문에, 
+Expanded 위젯을 사용해야 합니다.
 
 {% include app-figure.md image="ui/layout/title-section-parts.png" alt="Title section" %}
 
-The second row, called the Button section, also has
-3 children: each child is a column that contains an icon and text.
+두 번째 row는 세 개의 자식 요소를 가지고 있고, 
+각 요소는 아이콘과 텍스트를 가지고 있는 column 입니다.
 
 {% include app-figure.md image="ui/layout/button-section-diagram.png" alt="Button section" %}
 
-Once the layout has been diagrammed, it's easiest to take a bottom-up
-approach to implementing it. To minimize the visual
-confusion of deeply nested layout code, place some of the implementation
-in variables and functions.
+레이아웃을 다 그렸으면, 가장 하위 요소부터 구현합니다.
+깊이 파묻힌 레이아웃 코드의 시각적 혼란을 
+최소화 하기 위해서, 적당히 함수와 변수을 이용해서 구현합니다.
 
-## Step 2: Implement the title row
+## Step 2: 타이틀 row 구현하기
 
 <?code-excerpt path-base="layout/lakes/step2"?>
 
-First, you'll build the left column in the title section. Add the following code
-at the top of the `build()` method of the `MyApp` class:
+먼저, 타이틀 영역의 외쪽 column을 만듭니다.
 
 <?code-excerpt "lib/main.dart (titleSection)" title?>
 ```dart
